@@ -61,8 +61,8 @@
         }
 
         .logo {
-            width: 100px;
-            height: 100px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             background-color: var(--white);
             display: flex;
@@ -70,7 +70,7 @@
             align-items: center;
             box-shadow: var(--box-shadow);
             margin-bottom: 15px;
-            border: 5px solid var(--primary-light);
+            border: 3px solid var(--primary-light);
             transition: var(--transition);
         }
 
@@ -80,7 +80,7 @@
         }
 
         .logo img {
-            max-width: 70px;
+            max-width: 30px;
             height: auto;
         }
 
@@ -392,22 +392,6 @@
             box-shadow: 0 6px 15px rgba(46, 125, 50, 0.3);
         }
 
-        .forgot-password-modal input {
-            width: 100%;
-            padding: 14px 20px;
-            margin-bottom: 20px;
-            border: 2px solid #e0e0e0;
-            border-radius: var(--border-radius);
-            font-size: 16px;
-            transition: var(--transition);
-        }
-
-        .forgot-password-modal input:focus {
-            border-color: var(--primary-color);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2);
-        }
-
         .background-pattern {
             position: absolute;
             width: 100%;
@@ -576,7 +560,7 @@
                 <i class="fas fa-check-circle"></i>
             </div>
             <h2>Login Successful</h2>
-            <p id="successMessage">You're successfully signed in as user@example.com</p>
+            <p id="successMessage">You're successfully signed in!</p>
             <button class="modal-btn" id="successBtn">Continue</button>
         </div>
     </div>
@@ -593,41 +577,13 @@
         </div>
     </div>
 
-    <!-- Forgot Password Modal -->
-    <div id="forgotPasswordModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-icon">
-                <i class="fas fa-key" style="color: var(--primary-color);"></i>
-            </div>
-            <h2>Reset Your Password</h2>
-            <p>Enter your registered email address to receive a password reset link</p>
-            <div class="forgot-password-modal">
-                <input type="email" id="resetEmail" placeholder="Your registered email">
-                <button class="modal-btn" id="resetPasswordBtn">Send Reset Link</button>
-                <button class="modal-btn" style="background-color: #757575; margin-top: 10px;" id="cancelResetBtn">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Reset Link Sent Modal -->
-    <div id="resetSentModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-icon success-icon">
-                <i class="fas fa-paper-plane"></i>
-            </div>
-            <h2>Reset Link Sent</h2>
-            <p>We've sent a password reset link to your email address.</p>
-            <button class="modal-btn" id="closeResetSentBtn">Close</button>
-        </div>
-    </div>
-
     <script>
         // Initialize Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyD1l-ISg4Ij4gEJ9CYC1hwPM-HoSyMPu9E",
             authDomain: "farmeconix.firebaseapp.com",
             projectId: "farmeconix",
-            storageBucket: "farmeconix.firebasestorage.app",
+            storageBucket: "farmeconix.appspot.com",
             messagingSenderId: "818598156534",
             appId: "1:818598156534:web:0d8ee6fa614b90c3a3f4d7",
             measurementId: "G-9SKDVEHC2F"
@@ -644,21 +600,15 @@
         const emailInput = document.getElementById('email');
         const passwordInput = document.getElementById('password');
         const forgotPasswordLink = document.getElementById('forgotPasswordLink');
-        const resetPasswordBtn = document.getElementById('resetPasswordBtn');
-        const resetEmail = document.getElementById('resetEmail');
-        const cancelResetBtn = document.getElementById('cancelResetBtn');
-        const closeResetSentBtn = document.getElementById('closeResetSentBtn');
         const successBtn = document.getElementById('successBtn');
         const errorBtn = document.getElementById('errorBtn');
         const greetingElement = document.getElementById('greeting');
+        const successMessage = document.getElementById('successMessage');
 
         // Modal Elements
         const loadingModal = document.getElementById('loadingModal');
         const successModal = document.getElementById('successModal');
         const errorModal = document.getElementById('errorModal');
-        const forgotPasswordModal = document.getElementById('forgotPasswordModal');
-        const resetSentModal = document.getElementById('resetSentModal');
-        const successMessage = document.getElementById('successMessage');
 
         // Set time-based greeting
         function setGreeting() {
@@ -693,8 +643,16 @@
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const email = emailInput.value;
-            const password = passwordInput.value;
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+            
+            // Basic validation
+            if (!email || !password) {
+                document.getElementById('errorTitle').textContent = 'Missing Information';
+                document.getElementById('errorMessage').textContent = 'Please enter both email and password.';
+                showModal(errorModal);
+                return;
+            }
             
             showModal(loadingModal);
             
@@ -710,20 +668,18 @@
                 hideModal(loadingModal);
                 
                 if (doc.exists) {
-                    // User profile exists
-                    successMessage.textContent = `You're successfully signed in as ${user.email}`;
+                    // User profile exists - redirect to homepage
+                    successMessage.textContent = `Welcome back, ${user.email}`;
                     showModal(successModal);
                     
-                    // Set timeout for redirect
                     successBtn.onclick = () => {
                         window.location.href = 'homepage.html';
                     };
                 } else {
-                    // User profile doesn't exist
-                    successMessage.textContent = `You're successfully signed in as ${user.email}`;
+                    // User profile doesn't exist - redirect to profile page
+                    successMessage.textContent = `Welcome to Farmeconix, ${user.email}`;
                     showModal(successModal);
                     
-                    // Set timeout for redirect to profile page
                     successBtn.onclick = () => {
                         window.location.href = 'userprofile.html';
                     };
@@ -740,63 +696,6 @@
             }
         });
 
-        // Forgot password link click
-        forgotPasswordLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            showModal(forgotPasswordModal);
-        });
-
-        // Cancel reset password
-        cancelResetBtn.addEventListener('click', () => {
-            hideModal(forgotPasswordModal);
-            resetEmail.value = '';
-        });
-
-        // Close reset sent modal
-        closeResetSentBtn.addEventListener('click', () => {
-            hideModal(resetSentModal);
-            hideModal(forgotPasswordModal);
-            resetEmail.value = '';
-        });
-
-        // Reset password button click
-        resetPasswordBtn.addEventListener('click', async () => {
-            const email = resetEmail.value.trim();
-            
-            if (!email) {
-                document.getElementById('errorTitle').textContent = 'Email Required';
-                document.getElementById('errorMessage').textContent = 'Please enter your registered email address.';
-                showModal(errorModal);
-                return;
-            }
-            
-            try {
-                showModal(loadingModal);
-                hideModal(forgotPasswordModal);
-                
-                // Check if email exists
-                const methods = await auth.fetchSignInMethodsForEmail(email);
-                
-                if (methods && methods.length > 0) {
-                    // Email exists, send reset link
-                    await auth.sendPasswordResetEmail(email);
-                    hideModal(loadingModal);
-                    showModal(resetSentModal);
-                } else {
-                    // Email doesn't exist
-                    hideModal(loadingModal);
-                    document.getElementById('errorTitle').textContent = 'Email Not Registered';
-                    document.getElementById('errorMessage').textContent = 'This email is not registered with Farmeconix.';
-                    showModal(errorModal);
-                }
-            } catch (error) {
-                hideModal(loadingModal);
-                document.getElementById('errorTitle').textContent = 'Error';
-                document.getElementById('errorMessage').textContent = getErrorMessage(error);
-                showModal(errorModal);
-            }
-        });
-
         // Helper function to get user-friendly error messages
         function getErrorMessage(error) {
             switch (error.code) {
@@ -810,14 +709,14 @@
                     return 'Incorrect password. Please try again.';
                 case 'auth/too-many-requests':
                     return 'Too many unsuccessful attempts. Please try again later.';
-                case 'auth/email-already-in-use':
-                    return 'Email is already in use by another account.';
-                case 'auth/weak-password':
-                    return 'Password should be at least 6 characters.';
                 default:
-                    return error.message || 'An error occurred. Please try again.';
+                    return 'An error occurred. Please try again.';
             }
         }
+
+        // Initialize modals
+        errorBtn.addEventListener('click', () => hideModal(errorModal));
+        successBtn.addEventListener('click', () => hideModal(successModal));
     </script>
 </body>
 </html>
