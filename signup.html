@@ -1,17 +1,12 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Farmeconix - Create Account</title>
-    <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
+   <style>
         :root {
             --primary-color: #2E7D32;
             --primary-dark: #1B5E20;
@@ -579,59 +574,39 @@
         &copy; 2023 Farmeconix. All rights reserved.
     </div>
 
-    <!-- Loading Modal -->
-    <div id="loadingModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-icon loading-icon">
-                <i class="fas fa-circle-notch"></i>
-            </div>
-            <h2>Creating Your Account</h2>
-            <p>Please wait while we set up your Farmeconix account...</p>
-        </div>
-    </div>
+    <!-- Modals (keep existing modal HTML structure) -->
+    <div id="loadingModal" class="modal">...</div>
+    <div id="successModal" class="modal">...</div>
+    <div id="errorModal" class="modal">...</div>
 
-    <!-- Success Modal -->
-    <div id="successModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-icon success-icon">
-                <i class="fas fa-check-circle"></i>
-            </div>
-            <h2>Welcome to Farmeconix!</h2>
-            <p>Thank you for joining our community. Your account has been successfully created.</p>
-            <div id="confetti-container"></div>
-        </div>
-    </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+        import { 
+            getAuth, 
+            createUserWithEmailAndPassword, 
+            fetchSignInMethodsForEmail 
+        } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+        import { 
+            getFirestore, 
+            doc, 
+            setDoc, 
+            serverTimestamp 
+        } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 
-    <!-- Error Modal -->
-    <div id="errorModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-icon error-icon">
-                <i class="fas fa-exclamation-circle"></i>
-            </div>
-            <h2 id="errorTitle">Email Already Exists</h2>
-            <p id="errorMessage">This email is already registered. Please use a different email or sign in.</p>
-        </div>
-    </div>
-
-    <script>
-        // Initialize Firebase
         const firebaseConfig = {
-            apiKey: "AIzaSyD1l-ISg4Ij4gEJ9CYC1hwPM-HoSyMPu9E",
-            authDomain: "farmeconix.firebaseapp.com",
-            projectId: "farmeconix",
-            storageBucket: "farmeconix.firebasestorage.app",
-            messagingSenderId: "818598156534",
-            appId: "1:818598156534:web:0d8ee6fa614b90c3a3f4d7",
-            measurementId: "G-9SKDVEHC2F"
+            apiKey: "AIzaSyB2emPYZXi8zr8zxp-_F10Fqd9BRfTNBm0",
+            authDomain: "agritech-fe811.firebaseapp.com",
+            projectId: "agritech-fe811",
+            storageBucket: "agritech-fe811.firebasestorage.app",
+            messagingSenderId: "281176359721",
+            appId: "1:281176359721:web:1b7b50ff54b2daf7f1ad38"
         };
 
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-        const analytics = firebase.analytics();
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-        // DOM Elements
+        // DOM Elements and Event Listeners
         const signupForm = document.getElementById('signupForm');
         const emailInput = document.getElementById('email');
         const passwordInput = document.getElementById('password');
@@ -639,134 +614,105 @@
         const togglePassword = document.getElementById('togglePassword');
         const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
 
-        // Modal Elements
-        const loadingModal = document.getElementById('loadingModal');
-        const successModal = document.getElementById('successModal');
-        const errorModal = document.getElementById('errorModal');
-        const confettiContainer = document.getElementById('confetti-container');
-
-        // Toggle password visibility
-        togglePassword.addEventListener('click', function() {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            this.classList.toggle('fa-eye-slash');
+        // Password visibility toggle
+        [togglePassword, toggleConfirmPassword].forEach(toggle => {
+            toggle.addEventListener('click', (e) => {
+                const input = e.target.closest('.form-group').querySelector('input');
+                const type = input.type === 'password' ? 'text' : 'password';
+                input.type = type;
+                e.target.classList.toggle('fa-eye-slash');
+            });
         });
 
-        toggleConfirmPassword.addEventListener('click', function() {
-            const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            confirmPasswordInput.setAttribute('type', type);
-            this.classList.toggle('fa-eye-slash');
-        });
-
-        // Show modal function
-        function showModal(modal) {
-            modal.style.display = 'flex';
-        }
-
-        // Hide modal function
-        function hideModal(modal) {
-            modal.style.display = 'none';
-        }
-
-        // Create confetti effect
-        function createConfetti() {
-            confettiContainer.innerHTML = '';
-            for (let i = 0; i < 50; i++) {
-                const confetti = document.createElement('div');
-                confetti.classList.add('confetti');
-                confetti.style.left = Math.random() * 100 + '%';
-                confetti.style.backgroundColor = `hsl(${Math.random() * 60 + 100}, 70%, 50%)`;
-                confetti.style.width = Math.random() * 10 + 5 + 'px';
-                confetti.style.height = Math.random() * 10 + 5 + 'px';
-                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
-                confetti.style.animationDelay = Math.random() * 2 + 's';
-                confettiContainer.appendChild(confetti);
-            }
-        }
-
-        // Signup form submission
+        // Form submission handler
         signupForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
             const email = emailInput.value;
             const password = passwordInput.value;
             const confirmPassword = confirmPasswordInput.value;
-            
-            // Validate password match
+
             if (password !== confirmPassword) {
-                document.getElementById('errorTitle').textContent = 'Password Mismatch';
-                document.getElementById('errorMessage').textContent = 'Your passwords do not match. Please try again.';
-                showModal(errorModal);
-                setTimeout(() => hideModal(errorModal), 3000);
+                showError('Password Mismatch', 'Your passwords do not match. Please try again.');
                 return;
             }
-            
-            // Validate password length
+
             if (password.length < 6) {
-                document.getElementById('errorTitle').textContent = 'Weak Password';
-                document.getElementById('errorMessage').textContent = 'Password should be at least 6 characters long.';
-                showModal(errorModal);
-                setTimeout(() => hideModal(errorModal), 3000);
+                showError('Weak Password', 'Password should be at least 6 characters long.');
                 return;
             }
-            
+
             showModal(loadingModal);
-            
+
             try {
-                // Check if email exists
-                const methods = await auth.fetchSignInMethodsForEmail(email);
+                const methods = await fetchSignInMethodsForEmail(auth, email);
                 
-                if (methods && methods.length > 0) {
-                    // Email already exists
-                    hideModal(loadingModal);
-                    document.getElementById('errorTitle').textContent = 'Email Already Exists';
-                    document.getElementById('errorMessage').textContent = 'This email is already registered. Please use a different email or sign in.';
-                    showModal(errorModal);
-                    setTimeout(() => hideModal(errorModal), 3000);
-                } else {
-                    // Create new user
-                    const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-                    const user = userCredential.user;
-                    
-                    // Add user to Firestore
-                    await db.collection('users').doc(user.uid).set({
-                        email: user.email,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                        lastLogin: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                    
-                    hideModal(loadingModal);
-                    createConfetti();
-                    showModal(successModal);
-                    
-                    // Redirect after 3 seconds
-                    setTimeout(() => {
-                        hideModal(successModal);
-                        window.location.href = 'index.html';
-                    }, 3000);
+                if (methods.length > 0) {
+                    showError('Email Exists', 'This email is already registered. Please use a different email.');
+                    return;
                 }
+
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                await setDoc(doc(db, 'users', user.uid), {
+                    email: user.email,
+                    createdAt: serverTimestamp(),
+                    lastLogin: serverTimestamp()
+                });
+
+                showSuccess();
+                setTimeout(() => window.location.href = 'index.html', 3000);
             } catch (error) {
-                hideModal(loadingModal);
-                document.getElementById('errorTitle').textContent = 'Signup Error';
-                document.getElementById('errorMessage').textContent = getErrorMessage(error);
-                showModal(errorModal);
-                setTimeout(() => hideModal(errorModal), 3000);
+                showError('Signup Error', getErrorMessage(error));
             }
         });
 
-        // Helper function to get user-friendly error messages
+        // Helper functions
+        function showError(title, message) {
+            hideModal(loadingModal);
+            document.getElementById('errorTitle').textContent = title;
+            document.getElementById('errorMessage').textContent = message;
+            showModal(errorModal);
+            setTimeout(() => hideModal(errorModal), 3000);
+        }
+
+        function showSuccess() {
+            hideModal(loadingModal);
+            createConfetti();
+            showModal(successModal);
+        }
+
         function getErrorMessage(error) {
             switch (error.code) {
-                case 'auth/invalid-email':
-                    return 'The email address is not valid.';
-                case 'auth/email-already-in-use':
-                    return 'This email is already registered.';
-                case 'auth/weak-password':
-                    return 'Password should be at least 6 characters.';
-                case 'auth/operation-not-allowed':
-                    return 'Email/password accounts are not enabled.';
-                default:
-                    return error.message || 'An error occurred. Please try again.';
+                case 'auth/invalid-email': return 'The email address is not valid.';
+                case 'auth/email-already-in-use': return 'This email is already registered.';
+                case 'auth/weak-password': return 'Password should be at least 6 characters.';
+                case 'auth/operation-not-allowed': return 'Email/password accounts are not enabled.';
+                default: return error.message || 'An error occurred. Please try again.';
+            }
+        }
+
+        // Modal control functions
+        function showModal(modal) {
+            modal.style.display = 'flex';
+        }
+
+        function hideModal(modal) {
+            modal.style.display = 'none';
+        }
+
+        function createConfetti() {
+            const container = document.getElementById('confetti-container');
+            container.innerHTML = '';
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = `hsl(${Math.random() * 60 + 100}, 70%, 50%)`;
+                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(confetti);
             }
         }
     </script>
