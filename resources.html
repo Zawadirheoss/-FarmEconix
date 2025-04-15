@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resources | Farmeconix</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2e7d32;
+            --primary-light: #60ad5e;
+            --primary-dark: #005005;
+            --secondary-color: #ff9800;
+            --accent-color: #8bc34a;
+            --light-color: #f5f5f6;
+            --dark-color: #263238;
+            --text-color: #424242;
+            --text-light: #757575;
+            --error-color: #d32f2f;
+            --success-color: #388e3c;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--light-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--box-shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 50px;
+            height: auto;
+            margin-right: 15px;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: rotate(-5deg);
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            margin-left: 30px;
+            position: relative;
+        }
+
+        .profile-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 18px;
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 80px;
+            min-height: calc(100vh - 180px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .resources-hero {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .resources-hero h1 {
+            font-size: 2.5rem;
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+        }
+
+        .resources-hero p {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+
+        .resource-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .category-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 30px;
+            transition: var(--transition);
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .category-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-right: 15px;
+        }
+
+        .category-card h2 {
+            color: var(--primary-dark);
+        }
+
+        .resource-list {
+            list-style-type: none;
+        }
+
+        .resource-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
+        }
+
+        .resource-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .resource-item a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            display: block;
+            margin-bottom: 5px;
+            transition: var(--transition);
+        }
+
+        .resource-item a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .resource-item p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .resource-type {
+            display: inline-block;
+            padding: 3px 8px;
+            background-color: var(--light-color);
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+
+        .type-pdf { background-color: #ffe6e6; color: #d32f2f; }
+        .type-video { background-color: #e6f3ff; color: #1976d2; }
+        .type-tool { background-color: #e6ffe6; color: #388e3c; }
+        .type-guide { background-color: #fff2e6; color: #f57c00; }
+
+        .newsletter-section {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 40px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .newsletter-section h2 {
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+        }
+
+        .newsletter-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+
+        .subscribe-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .subscribe-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 40px 0 20px;
+            text-align: center;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-bottom {
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bdbdbd;
+            font-size: 14px;
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(46, 125, 50, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .resources-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .resources-hero p {
+                font-size: 1rem;
+            }
+            
+            .newsletter-section {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="Logo.jpeg" alt="Farmeconix Logo" class="logo">
+                <div class="logo-text">Farmeconix</div>
+            </div>
+            
+            <div class="user-profile">
+                <div class="profile-icon" id="profileIcon">U</div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+            </div>
+
+            <div id="resourcesContent" style="display: none;">
+                <section class="resources-hero">
+                    <h1>Farmer Resources</h1>
+                    <p>Access our collection of guides, tools, and educational materials to help you succeed in modern agriculture.</p>
+                </section>
+
+                <section class="resource-categories">
+                    <div class="category-card">
+                        <div class="category-header">
+                            <div class="category-icon">
+                                <i class="fas fa-book-open"></i>
+                            </div>
+                            <h2>Guides & Manuals</h2>
+                        </div>
+                        <ul class="resource-list">
+                            <li class="resource-item">
+                                <a href="#">Precision Farming Starter Guide</a>
+                                <p>Comprehensive introduction to precision agriculture technologies</p>
+                                <span class="resource-type type-guide">Guide</span>
+                            </li>
+                            <li class="resource-item">
+                                <a href="#">Organic Farming Certification Process</a>
+                                <p>Step-by-step manual for obtaining organic certification</p>
+                                <span class="resource-type type-guide">Guide</span>
+                            </li>
+                            <li class="resource-item">
+                                <a href="#">Irrigation System Maintenance</a>
+                                <p>Best practices for maintaining your irrigation equipment</p>
+                                <span class="resource-type type-pdf">PDF</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-header">
+                            <div class="category-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h2>Market Data</h2>
+                        </div>
+                        <ul class="resource-list">
+                            <li class="resource-item">
+                                <a href="#">Commodity Price Trends</a>
+                                <p>Monthly reports on agricultural commodity prices</p>
+                                <span class="resource-type type-pdf">PDF</span>
+                            </li>
+                            <li class="resource-item">
+                                <a href="#">Export Market Analysis</a>
+                                <p>Opportunities in international markets for African farmers</p>
+                                <span class="resource-type type-pdf">PDF</span>
+                            </li>
+                            <li class="resource-item">
+                                <a href="#">Seasonal Demand Forecast</a>
+                                <p>Predictive analysis of crop demand by season</p>
+                                <span class="resource-type type-tool">Interactive Tool</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-header">
+                            <div class="category-icon">
+                                <i class="fas fa-video"></i>
+                            </div>
+                            <h2>Video Tutorials</h2>
+                        </div>
+                        <ul class="resource-list">
+                            <li class="resource-item">
+                                <a href="#">Soil Testing Techniques</a>
+                                <p>How to properly test and analyze your soil</p>
+                                <span class="resource-type type-video">Video</span>
+                            </li>
+                            <li class="resource-item">
+                                <a href="#">Pest Identification & Control</a>
+                                <p>Visual guide to common pests and organic solutions</p>
+                                <span class="resource-type type-video">Video Series</span>
+                            </li>
+                            <li class="resource-item">
+                                <a href="#">Farm Management Software Walkthrough</a>
+                                <p>Complete tutorial for our digital tools</p>
+                                <span class="resource-type type-video">Tutorial</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-header">
+                            <div class="category-icon">
+                                <i class="fas fa-calculator"></i>
+                            </div>
+                            <h2>Calculators & Tools</h2>
+                        </div>
+                        <ul class="resource-list">
+                            <li class="resource-item">
+                                <a href="#">Fertilizer Calculator</a>
+                                <p>Determine optimal fertilizer application rates</p>
+                                <span class="resource-type type-tool">Interactive Tool</span>
+                            </li>
+                            <li class="resource-item">
+                                <a href="#">Irrigation Scheduling Tool</a>
+                                <p>Custom watering schedule based on your crops</p>
+                                <span class="resource-type type-tool">Web App</span>
+                            </li>
+                            <li class="resource-item">
+                                <a href="#">Profitability Analyzer</a>
+                                <p>Calculate potential profits for different crops</p>
+                                <span class="resource-type type-tool">Spreadsheet</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-header">
+                            <div class="category-icon">
+                                <i class="fas fa-gavel"></i>
+                            </div>
+                            <h2>Policy & Regulations</h2>
+                        </div>
+                        <ul class="resource-list">
+                            <li class="resource-item">
+                                <a href="#">Agricultural Subsidy Guide</a>
+                                <p>Current government support programs for farmers</p>
+                                <span class="resource-type type-pdf">PDF</span>
+                            </li>
+                            <li class="resource-item">
+                                <a href="#">Land Use Regulations</a>
+                                <p>Updated zoning and land use policies</p>
+                                <span class="resource-type type-pdf">PDF</span>
+                            </li>
+                            <li class="resource-item">
+                                <a href="#">Export Documentation Checklist</a>
+                                <p>Required paperwork for agricultural exports</p>
+                                <span class="resource-type type-guide">Guide</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-header">
+                            <div class="category-icon">
+                                <i class="fas fa-leaf"></i>
+                            </div>
+                            <h2>Sustainable Practices</h2>
+                        </div>
+                        <ul class="resource-list">
+                            <li class="resource-item">
+                                <a href="#">Water Conservation Methods</a>
+                                <p>Techniques for reducing water usage</p>
+                                <span class="resource-type type-guide">Guide</span>
+                            </li>
+                            <li class="resource-item">
+                                <a href="#">Organic Pest Control Recipes</a>
+                                <p>Homemade solutions for common pests</p>
+                                <span class="resource-type type-pdf">PDF</span>
+                            </li>
+                            <li class="resource-item">
+                                <a href="#">Soil Health Assessment</a>
+                                <p>How to evaluate and improve your soil quality</p>
+                                <span class="resource-type type-video">Video Guide</span>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section class="newsletter-section">
+                    <h2>Stay Updated with Farmeconix</h2>
+                    <p>Subscribe to our monthly newsletter for the latest resources, tips, and agricultural innovations</p>
+                    <form class="newsletter-form">
+                        <div class="form-group">
+                            <input type="email" placeholder="Enter your email address" required>
+                        </div>
+                        <button type="submit" class="subscribe-btn">Subscribe</button>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-bottom">
+                <p>&copy; 2023 Farmeconix. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB2emPYZXi8zr8zxp-_F10Fqd9BRfTNBm0",
+            authDomain: "agritech-fe811.firebaseapp.com",
+            projectId: "agritech-fe811",
+            storageBucket: "agritech-fe811.appspot.com",
+            messagingSenderId: "281176359721",
+            appId: "1:281176359721:web:1b7b50ff54b2daf7f1ad38"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // DOM Elements
+        const loadingElement = document.getElementById('loading');
+        const resourcesContent = document.getElementById('resourcesContent');
+        const profileIcon = document.getElementById('profileIcon');
+
+        // Check auth state
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in
+                const email = user.email;
+                const firstLetter = email.charAt(0).toUpperCase();
+                
+                // Update profile icon
+                profileIcon.textContent = firstLetter;
+                
+                // Hide loading and show content
+                loadingElement.style.display = 'none';
+                resourcesContent.style.display = 'block';
+            } else {
+                // User is signed out, redirect to login
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>

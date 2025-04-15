@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Farmeconix</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2e7d32;
+            --primary-light: #60ad5e;
+            --primary-dark: #005005;
+            --secondary-color: #ff9800;
+            --accent-color: #8bc34a;
+            --light-color: #f5f5f6;
+            --dark-color: #263238;
+            --text-color: #424242;
+            --text-light: #757575;
+            --error-color: #d32f2f;
+            --success-color: #388e3c;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--light-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--box-shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 50px;
+            height: auto;
+            margin-right: 15px;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: rotate(-5deg);
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            margin-left: 30px;
+            position: relative;
+        }
+
+        .profile-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 18px;
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 80px;
+            min-height: calc(100vh - 180px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .about-hero {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .about-hero h1 {
+            font-size: 2.5rem;
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+        }
+
+        .about-hero p {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+
+        .mission-vision {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .mission-card, .vision-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 30px;
+            transition: var(--transition);
+        }
+
+        .mission-card:hover, .vision-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+        }
+
+        .mission-card h2, .vision-card h2 {
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .mission-card h2 i, .vision-card h2 i {
+            margin-right: 15px;
+            color: var(--primary-color);
+        }
+
+        .team-section {
+            margin-top: 50px;
+        }
+
+        .team-section h2 {
+            text-align: center;
+            color: var(--primary-dark);
+            margin-bottom: 40px;
+            font-size: 2rem;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .team-member {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 25px;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+            font-weight: bold;
+        }
+
+        .team-member h3 {
+            color: var(--primary-dark);
+            margin-bottom: 5px;
+        }
+
+        .team-member p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 40px 0 20px;
+            text-align: center;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-bottom {
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bdbdbd;
+            font-size: 14px;
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(46, 125, 50, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .about-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .about-hero p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="Logo.jpeg" alt="Farmeconix Logo" class="logo">
+                <div class="logo-text">Farmeconix</div>
+            </div>
+            
+            <div class="user-profile">
+                <div class="profile-icon" id="profileIcon">U</div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+            </div>
+
+            <div id="aboutContent" style="display: none;">
+                <section class="about-hero">
+                    <h1>About Farmeconix</h1>
+                    <p>Empowering farmers with innovative agricultural technology solutions to increase productivity, sustainability, and profitability in farming communities worldwide.</p>
+                </section>
+
+                <section class="mission-vision">
+                    <div class="mission-card">
+                        <h2><i class="fas fa-bullseye"></i> Our Mission</h2>
+                        <p>To bridge the gap between traditional farming practices and modern technology by providing accessible, affordable, and easy-to-use solutions that help farmers optimize their operations and maximize yields.</p>
+                    </div>
+                    <div class="vision-card">
+                        <h2><i class="fas fa-eye"></i> Our Vision</h2>
+                        <p>To create a world where every farmer, regardless of scale or location, has access to the tools and knowledge needed to thrive in an increasingly digital agricultural landscape.</p>
+                    </div>
+                </section>
+
+                <section class="values-section">
+                    <h2 style="text-align: center; color: var(--primary-dark); margin-bottom: 40px; font-size: 2rem;">Our Core Values</h2>
+                    <div class="mission-vision">
+                        <div class="mission-card">
+                            <h2><i class="fas fa-hand-holding-heart"></i> Sustainability</h2>
+                            <p>We promote farming practices that protect the environment and ensure long-term viability of agricultural lands for future generations.</p>
+                        </div>
+                        <div class="mission-card">
+                            <h2><i class="fas fa-lightbulb"></i> Innovation</h2>
+                            <p>We continuously develop and adapt cutting-edge technologies to solve real-world farming challenges.</p>
+                        </div>
+                        <div class="mission-card">
+                            <h2><i class="fas fa-users"></i> Community</h2>
+                            <p>We believe in the power of collective knowledge and foster strong networks among farmers, agronomists, and technologists.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="team-section">
+                    <h2>Meet Our Leadership Team</h2>
+                    <div class="team-grid">
+                        <div class="team-member">
+                            <div class="team-avatar">JD</div>
+                            <h3>John Doe</h3>
+                            <p>Founder & CEO</p>
+                            <p>Agricultural Engineer with 15+ years experience in agritech solutions</p>
+                        </div>
+                        <div class="team-member">
+                            <div class="team-avatar">AS</div>
+                            <h3>Alice Smith</h3>
+                            <p>Chief Technology Officer</p>
+                            <p>Software developer specializing in agricultural applications</p>
+                        </div>
+                        <div class="team-member">
+                            <div class="team-avatar">RJ</div>
+                            <h3>Robert Johnson</h3>
+                            <p>Head of Field Operations</p>
+                            <p>Former commercial farmer with deep industry connections</p>
+                        </div>
+                        <div class="team-member">
+                            <div class="team-avatar">MW</div>
+                            <h3>Maria Williams</h3>
+                            <p>Director of Farmer Education</p>
+                            <p>Agricultural extension specialist with focus on technology adoption</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-bottom">
+                <p>&copy; 2023 Farmeconix. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB2emPYZXi8zr8zxp-_F10Fqd9BRfTNBm0",
+            authDomain: "agritech-fe811.firebaseapp.com",
+            projectId: "agritech-fe811",
+            storageBucket: "agritech-fe811.appspot.com",
+            messagingSenderId: "281176359721",
+            appId: "1:281176359721:web:1b7b50ff54b2daf7f1ad38"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // DOM Elements
+        const loadingElement = document.getElementById('loading');
+        const aboutContent = document.getElementById('aboutContent');
+        const profileIcon = document.getElementById('profileIcon');
+
+        // Check auth state
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in
+                const email = user.email;
+                const firstLetter = email.charAt(0).toUpperCase();
+                
+                // Update profile icon
+                profileIcon.textContent = firstLetter;
+                
+                // Hide loading and show content
+                loadingElement.style.display = 'none';
+                aboutContent.style.display = 'block';
+            } else {
+                // User is signed out, redirect to login
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>

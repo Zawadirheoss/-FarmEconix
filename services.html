@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services | Farmeconix</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2e7d32;
+            --primary-light: #60ad5e;
+            --primary-dark: #005005;
+            --secondary-color: #ff9800;
+            --accent-color: #8bc34a;
+            --light-color: #f5f5f6;
+            --dark-color: #263238;
+            --text-color: #424242;
+            --text-light: #757575;
+            --error-color: #d32f2f;
+            --success-color: #388e3c;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--light-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--box-shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 50px;
+            height: auto;
+            margin-right: 15px;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: rotate(-5deg);
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            margin-left: 30px;
+            position: relative;
+        }
+
+        .profile-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 18px;
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 80px;
+            min-height: calc(100vh - 180px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .services-hero {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .services-hero h1 {
+            font-size: 2.5rem;
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+        }
+
+        .services-hero p {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .service-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 30px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background-color: var(--primary-color);
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .service-card h2 {
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+        }
+
+        .service-card p {
+            color: var(--text-color);
+            margin-bottom: 20px;
+        }
+
+        .service-features {
+            margin-top: 20px;
+        }
+
+        .service-features h3 {
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .feature-list {
+            list-style-type: none;
+        }
+
+        .feature-list li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .feature-list li::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+        }
+
+        .cta-section {
+            text-align: center;
+            margin-top: 60px;
+            padding: 40px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .cta-section h2 {
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .cta-section p {
+            max-width: 700px;
+            margin: 0 auto 30px;
+            color: var(--text-color);
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 30px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            font-size: 1.1rem;
+        }
+
+        .cta-button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 40px 0 20px;
+            text-align: center;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-bottom {
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bdbdbd;
+            font-size: 14px;
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(46, 125, 50, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .services-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .services-hero p {
+                font-size: 1rem;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="Logo.jpeg" alt="Farmeconix Logo" class="logo">
+                <div class="logo-text">Farmeconix</div>
+            </div>
+            
+            <div class="user-profile">
+                <div class="profile-icon" id="profileIcon">U</div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+            </div>
+
+            <div id="servicesContent" style="display: none;">
+                <section class="services-hero">
+                    <h1>Our Agricultural Services</h1>
+                    <p>Discover how Farmeconix combines cutting-edge technology with agricultural expertise to help farmers increase productivity, reduce costs, and make data-driven decisions.</p>
+                </section>
+
+                <section class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <h2>Precision Farming Solutions</h2>
+                        <p>Optimize your farming operations with our precision agriculture technologies that help you monitor and manage your fields with pinpoint accuracy.</p>
+                        <div class="service-features">
+                            <h3>Key Features:</h3>
+                            <ul class="feature-list">
+                                <li>Soil and crop monitoring sensors</li>
+                                <li>Automated irrigation control</li>
+                                <li>Variable-rate application technology</li>
+                                <li>Yield mapping and analysis</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-tablet-alt"></i>
+                        </div>
+                        <h2>Farm Management Software</h2>
+                        <p>Our comprehensive farm management platform helps you track all aspects of your operation from anywhere, on any device.</p>
+                        <div class="service-features">
+                            <h3>Key Features:</h3>
+                            <ul class="feature-list">
+                                <li>Inventory and input tracking</li>
+                                <li>Equipment maintenance scheduling</li>
+                                <li>Labor management tools</li>
+                                <li>Financial reporting and analysis</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-cloud-sun"></i>
+                        </div>
+                        <h2>Weather & Climate Analytics</h2>
+                        <p>Make informed decisions with hyper-local weather forecasts and climate trend analysis tailored to your specific location.</p>
+                        <div class="service-features">
+                            <h3>Key Features:</h3>
+                            <ul class="feature-list">
+                                <li>Field-specific weather forecasts</li>
+                                <li>Frost and drought alerts</li>
+                                <li>Historical climate data</li>
+                                <li>Planting window recommendations</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h2>Automation & Robotics</h2>
+                        <p>Reduce labor costs and increase efficiency with our range of agricultural automation solutions.</p>
+                        <div class="service-features">
+                            <h3>Key Features:</h3>
+                            <ul class="feature-list">
+                                <li>Autonomous tractors and equipment</li>
+                                <li>Robotic harvesting systems</li>
+                                <li>Drone-based field monitoring</li>
+                                <li>Automated sorting and packaging</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h2>Market Intelligence</h2>
+                        <p>Get real-time market data and predictive analytics to help you make better selling decisions.</p>
+                        <div class="service-features">
+                            <h3>Key Features:</h3>
+                            <ul class="feature-list">
+                                <li>Commodity price tracking</li>
+                                <li>Demand forecasting</li>
+                                <li>Direct buyer connections</li>
+                                <li>Storage optimization advice</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h2>Farmer Education</h2>
+                        <p>Continuous learning programs to help you get the most from modern agricultural technologies.</p>
+                        <div class="service-features">
+                            <h3>Key Features:</h3>
+                            <ul class="feature-list">
+                                <li>On-site training workshops</li>
+                                <li>Online courses and webinars</li>
+                                <li>Technology adoption coaching</li>
+                                <li>Best practice resources</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="cta-section">
+                    <h2>Ready to Transform Your Farming Operation?</h2>
+                    <p>Our team of agricultural technology experts is ready to help you implement the right solutions for your specific needs and budget.</p>
+                    <a href="#" class="cta-button">Get Started Today</a>
+                </section>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-bottom">
+                <p>&copy; 2023 Farmeconix. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB2emPYZXi8zr8zxp-_F10Fqd9BRfTNBm0",
+            authDomain: "agritech-fe811.firebaseapp.com",
+            projectId: "agritech-fe811",
+            storageBucket: "agritech-fe811.appspot.com",
+            messagingSenderId: "281176359721",
+            appId: "1:281176359721:web:1b7b50ff54b2daf7f1ad38"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // DOM Elements
+        const loadingElement = document.getElementById('loading');
+        const servicesContent = document.getElementById('servicesContent');
+        const profileIcon = document.getElementById('profileIcon');
+
+        // Check auth state
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in
+                const email = user.email;
+                const firstLetter = email.charAt(0).toUpperCase();
+                
+                // Update profile icon
+                profileIcon.textContent = firstLetter;
+                
+                // Hide loading and show content
+                loadingElement.style.display = 'none';
+                servicesContent.style.display = 'block';
+            } else {
+                // User is signed out, redirect to login
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>
