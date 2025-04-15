@@ -577,23 +577,29 @@
         </div>
     </div>
 
-    <script>
-        // Initialize Firebase
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
+
+        // Your web app's Firebase configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyD1l-ISg4Ij4gEJ9CYC1hwPM-HoSyMPu9E",
-            authDomain: "farmeconix.firebaseapp.com",
-            projectId: "farmeconix",
-            storageBucket: "farmeconix.appspot.com",
-            messagingSenderId: "818598156534",
-            appId: "1:818598156534:web:0d8ee6fa614b90c3a3f4d7",
-            measurementId: "G-9SKDVEHC2F"
+            apiKey: "AIzaSyDfLf4XaF6WcyiXdJ7R_0l6NPfZ1mzmcjs",
+            authDomain: "farmeconix-bce5f.firebaseapp.com",
+            projectId: "farmeconix-bce5f",
+            storageBucket: "farmeconix-bce5f.firebasestorage.app",
+            messagingSenderId: "1031571927807",
+            appId: "1:1031571927807:web:43d544c3c144568335d2ca",
+            measurementId: "G-6MFED45NZG"
         };
 
         // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-        const analytics = firebase.analytics();
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const analytics = getAnalytics(app);
 
         // DOM Elements
         const loginForm = document.getElementById('loginForm');
@@ -658,16 +664,16 @@
             
             try {
                 // Sign in with email and password
-                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
                 
                 // Check if user profile exists in Firestore
-                const userProfileRef = db.collection('userprofile').doc(user.uid);
-                const doc = await userProfileRef.get();
+                const userProfileRef = doc(db, 'userprofile', user.uid);
+                const docSnap = await getDoc(userProfileRef);
                 
                 hideModal(loadingModal);
                 
-                if (doc.exists) {
+                if (docSnap.exists()) {
                     // User profile exists - redirect to homepage
                     successMessage.textContent = `Welcome back, ${user.email}`;
                     showModal(successModal);
