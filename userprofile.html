@@ -1,1 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmechonix - User Profile</title>
+    <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js"></script>
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #388E3C;
+            --accent-color: #8BC34A;
+            --light-color: #F1F8E9;
+            --dark-color: #1B5E20;
+            --text-color: #333;
+            --error-color: #F44336;
+        }
 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+            border: 2px solid var(--primary-color);
+        }
+
+        h1 {
+            color: var(--dark-color);
+            text-align: center;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin: 20px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-color);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+        }
+
+        .radio-group, .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .radio-option, .checkbox-option {
+            display: flex;
+            align-items: center;
+        }
+
+        .radio-option input, .checkbox-option input {
+            margin-right: 8px;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: 600;
+            display: block;
+            width: 200px;
+            margin: 30px auto 0;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .required:after {
+            content: " *";
+            color: var(--error-color);
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal h3 {
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .modal p {
+            margin-bottom: 25px;
+            font-size: 16px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            min-width: 100px;
+        }
+
+        .confirm-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+
+        .confirm-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .cancel-btn {
+            background-color: #f1f1f1;
+            color: var(--text-color);
+            border: 1px solid #ddd;
+        }
+
+        .cancel-btn:hover {
+            background-color: #e1e1e1;
+        }
+
+        .success-icon {
+            color: var(--primary-color);
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+            
+            .radio-group, .checkbox-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="Logo.jpeg" alt="Farmechonix Logo" class="logo">
+            <h1>Farmechonix User Profile</h1>
+        </header>
+
+        <div class="form-container">
+            <form id="profileForm">
+                <h2>Personal Information</h2>
+                
+                <div class="form-group">
+                    <label for="email" class="required">Email</label>
+                    <input type="email" id="email" name="email" required readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label for="fullName" class="required">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" required>
+                    <div class="error-message" id="fullNameError">Please enter your full name</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phoneNumber" class="required">Phone Number</label>
+                    <input type="tel" id="phoneNumber" name="phoneNumber" required>
+                    <div class="error-message" id="phoneNumberError">Please enter a valid phone number</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="dob" class="required">Date of Birth</label>
+                    <input type="date" id="dob" name="dob" required>
+                    <div class="error-message" id="dobError">Please enter your date of birth</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Gender</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="male" name="gender" value="Male" required>
+                            <label for="male">Male</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="female" name="gender" value="Female">
+                            <label for="female">Female</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="other" name="gender" value="Other">
+                            <label for="other">Other</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="preferNotToSay" name="gender" value="Prefer not to say">
+                            <label for="preferNotToSay">Prefer not to say</label>
+                        </div>
+                    </div>
+                    <div class="error-message" id="genderError">Please select your gender</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="country" class="required">Country/Region of Residence</label>
+                    <input type="text" id="country" name="country" required>
+                    <div class="error-message" id="countryError">Please enter your country/region</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Are you located in an urban or rural area?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="urban" name="location" value="Urban" required>
+                            <label for="urban">Urban</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="rural" name="location" value="Rural">
+                            <label for="rural">Rural</label>
+                        </div>
+                    </div>
+                    <div class="error-message" id="locationError">Please select your location</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="occupation" class="required">Occupation</label>
+                    <input type="text" id="occupation" name="occupation" placeholder="e.g., farmer, agribusiness owner, researcher, student, etc." required>
+                    <div class="error-message" id="occupationError">Please enter your occupation</div>
+                </div>
+
+                <h2>Agriculture-Related Questions</h2>
+                
+                <div class="form-group">
+                    <label for="primaryRole" class="required">What is your primary role in agriculture?</label>
+                    <input type="text" id="primaryRole" name="primaryRole" placeholder="e.g., crop farming, livestock, agro-processing, etc." required>
+                    <div class="error-message" id="primaryRoleError">Please enter your primary role</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Type of farming activity:</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="cropFarming" name="farmingType" value="Crop farming" required>
+                            <label for="cropFarming">Crop farming</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="livestock" name="farmingType" value="Livestock">
+                            <label for="livestock">Livestock</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="mixedFarming" name="farmingType" value="Mixed farming">
+                            <label for="mixedFarming">Mixed farming</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="otherFarming" name="farmingType" value="Other">
+                            <label for="otherFarming">Other</label>
+                        </div>
+                    </div>
+                    <div class="error-message" id="farmingTypeError">Please select your farming type</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="farmingDetails" class="required">Please specify your farming activities</label>
+                    <textarea id="farmingDetails" name="farmingDetails" rows="3" required placeholder="e.g., Maize and beans, Dairy cattle, etc."></textarea>
+                    <div class="error-message" id="farmingDetailsError">Please specify your farming activities</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="practices" class="required">Current agricultural practices</label>
+                    <input type="text" id="practices" name="practices" placeholder="e.g., organic, conventional, hydroponics, etc." required>
+                    <div class="error-message" id="practicesError">Please enter your current practices</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Do you use irrigation systems?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="irrigationYes" name="irrigation" value="Yes" required>
+                            <label for="irrigationYes">Yes</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="irrigationNo" name="irrigation" value="No">
+                            <label for="irrigationNo">No</label>
+                        </div>
+                    </div>
+                    <div class="error-message" id="irrigationError">Please select an option</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="challenges" class="required">What are your biggest challenges in agriculture?</label>
+                    <textarea id="challenges" name="challenges" rows="3" required placeholder="e.g., pests, climate change, access to inputs, etc."></textarea>
+                    <div class="error-message" id="challengesError">Please describe your challenges</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Have you received formal training in agriculture?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="trainingYes" name="training" value="Yes" required>
+                            <label for="trainingYes">Yes</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="trainingNo" name="training" value="No">
+                            <label for="trainingNo">No</label>
+                        </div>
+                    </div>
+                    <div class="error-message" id="trainingError">Please select an option</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Do you belong to any farming cooperative/association?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="cooperativeYes" name="cooperative" value="Yes" required>
+                            <label for="cooperativeYes">Yes</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="cooperativeNo" name="cooperative" value="No">
+                            <label for="cooperativeNo">No</label>
+                        </div>
+                    </div>
+                    <div class="error-message" id="cooperativeError">Please select an option</div>
+                </div>
+
+                <h2>Technology-Related Questions</h2>
+                
+                <div class="form-group">
+                    <label class="required">Do you use technology in your agricultural activities?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="techYes" name="techUse" value="Yes" required>
+                            <label for="techYes">Yes</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="techNo" name="techUse" value="No">
+                            <label for="techNo">No</label>
+                        </div>
+                    </div>
+                    <div class="error-message" id="techUseError">Please select an option</div>
+                </div>
+                
+                <div class="form-group" id="techUsedGroup">
+                    <label for="techUsed">If yes, specify technologies used</label>
+                    <input type="text" id="techUsed" name="techUsed" placeholder="e.g., drones, IoT sensors, farm management apps, etc.">
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Do you have access to a smartphone or computer?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="deviceYes" name="deviceAccess" value="Yes" required>
+                            <label for="deviceYes">Yes</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="deviceNo" name="deviceAccess" value="No">
+                            <label for="deviceNo">No</label>
+                        </div>
+                    </div>
+                    <div class="error-message" id="deviceAccessError">Please select an option</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">How reliable is your internet access?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="internetPoor" name="internet" value="Poor" required>
+                            <label for="internetPoor">Poor</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="internetModerate" name="internet" value="Moderate">
+                            <label for="internetModerate">Moderate</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="internetExcellent" name="internet" value="Excellent">
+                            <label for="internetExcellent">Excellent</label>
+                        </div>
+                    </div>
+                    <div class="error-message" id="internetError">Please select an option</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Are you interested in adopting new agricultural technologies?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="adoptYes" name="adoptTech" value="Yes" required>
+                            <label for="adoptYes">Yes</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="adoptNo" name="adoptTech" value="No">
+                            <label for="adoptNo">No</label>
+                        </div>
+                    </div>
+                    <div class="error-message" id="adoptTechError">Please select an option</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="techTools">What tech tools would improve your productivity?</label>
+                    <input type="text" id="techTools" name="techTools" placeholder="e.g., weather apps, soil sensors, AI analytics">
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Do you collect data on your farm operations?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="dataYes" name="dataCollection" value="Yes" required>
+                            <label for="dataYes">Yes</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="dataNo" name="dataCollection" value="No">
+                            <label for="dataNo">No</label>
+                        </div>
+                    </div>
+                    <div class="error-message" id="dataCollectionError">Please select an option</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Are you open to sharing anonymized data for research/improvement purposes?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="shareYes" name="dataSharing" value="Yes" required>
+                            <label for="shareYes">Yes</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="shareNo" name="dataSharing" value="No">
+                            <label for="shareNo">No</label>
+                        </div>
+                    </div>
+                    <div class="error-message" id="dataSharingError">Please select an option</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">How familiar are you with blockchain/AI for agriculture?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="familiarBeginner" name="familiarity" value="Beginner" required>
+                            <label for="familiarBeginner">Beginner</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="familiarIntermediate" name="familiarity" value="Intermediate">
+                            <label for="familiarIntermediate">Intermediate</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="familiarExpert" name="familiarity" value="Expert">
+                            <label for="familiarExpert">Expert</label>
+                        </div>
+                    </div>
+                    <div class="error-message" id="familiarityError">Please select an option</div>
+                </div>
+
+                <h2>Economics-Related Questions</h2>
+                
+                <div class="form-group">
+                    <label for="incomeSource" class="required">What is your primary source of income?</label>
+                    <input type="text" id="incomeSource" name="incomeSource" placeholder="e.g., farming, side business, etc." required>
+                    <div class="error-message" id="incomeSourceError">Please enter your income source</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Do you have access to agricultural loans/credit?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="loansYes" name="loans" value="Yes" required>
+                            <label for="loansYes">Yes</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="loansNo" name="loans" value="No">
+                            <label for="loansNo">No</label>
+                        </div>
+                    </div>
+                    <div class="error-message" id="loansError">Please select an option</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="marketing" class="required">How do you market your produce?</label>
+                    <input type="text" id="marketing" name="marketing" placeholder="e.g., local markets, online platforms, middlemen" required>
+                    <div class="error-message" id="marketingError">Please describe your marketing methods</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="economicChallenges" class="required">What economic challenges do you face?</label>
+                    <textarea id="economicChallenges" name="economicChallenges" rows="3" required placeholder="e.g., inflation, low prices, high input costs"></textarea>
+                    <div class="error-message" id="economicChallengesError">Please describe your economic challenges</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Do you use financial management tools for your farm?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="financeToolsYes" name="financeTools" value="Yes" required>
+                            <label for="financeToolsYes">Yes</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="financeToolsNo" name="financeTools" value="No">
+                            <label for="financeToolsNo">No</label>
+                        </div>
+                    </div>
+                    <div class="error-message" id="financeToolsError">Please select an option</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Are you interested in diversifying income through agritourism or value-added products?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="diversifyYes" name="diversify" value="Yes" required>
+                            <label for="diversifyYes">Yes</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="diversifyNo" name="diversify" value="No">
+                            <label for="diversifyNo">No</label>
+                        </div>
+                    </div>
+                    <div class="error-message" id="diversifyError">Please select an option</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="governmentImpact" class="required">How do government policies impact your agricultural activities?</label>
+                    <textarea id="governmentImpact" name="governmentImpact" rows="3" required></textarea>
+                    <div class="error-message" id="governmentImpactError">Please describe the impact</div>
+                </div>
+
+                <h2>Additional Information</h2>
+                
+                <div class="form-group">
+                    <label for="languages" class="required">List languages you speak fluently</label>
+                    <input type="text" id="languages" name="languages" required placeholder="e.g., English, Swahili, French">
+                    <div class="error-message" id="languagesError">Please list languages you speak</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Would you like to receive updates on Farmechonix's programs?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="updatesYes" name="updates" value="Yes" required>
+                            <label for="updatesYes">Yes</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="updatesNo" name="updates" value="No">
+                            <label for="updatesNo">No</label>
+                        </div>
+                    </div>
+                    <div class="error-message" id="updatesError">Please select an option</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="hearAbout" class="required">How did you hear about Farmechonix?</label>
+                    <input type="text" id="hearAbout" name="hearAbout" placeholder="e.g., referral, social media, workshop" required>
+                    <div class="error-message" id="hearAboutError">Please tell us how you heard about us</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="comments">Any other comments or suggestions?</label>
+                    <textarea id="comments" name="comments" rows="3"></textarea>
+                </div>
+
+                <button type="button" id="submitBtn" class="btn">Save Profile</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h3>Confirm Submission</h3>
+            <p>Are you sure you want to submit your profile information? Please review your answers before proceeding.</p>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel-btn" id="cancelBtn">Cancel</button>
+                <button class="modal-btn confirm-btn" id="confirmSubmitBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <div class="success-icon">✓</div>
+            <h3>Profile Saved Successfully!</h3>
+            <p>Your profile information has been saved successfully. You will now be redirected to the homepage.</p>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB2emPYZXi8zr8zxp-_F10Fqd9BRfTNBm0",
+            authDomain: "agritech-fe811.firebaseapp.com",
+            projectId: "agritech-fe811",
+            storageBucket: "agritech-fe811.appspot.com",
+            messagingSenderId: "281176359721",
+            appId: "1:281176359721:web:1b7b50ff54b2daf7f1ad38"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // DOM Elements
+        const profileForm = document.getElementById('profileForm');
+        const emailInput = document.getElementById('email');
+        const submitBtn = document.getElementById('submitBtn');
+        const confirmModal = document.getElementById('confirmModal');
+        const successModal = document.getElementById('successModal');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const confirmSubmitBtn = document.getElementById('confirmSubmitBtn');
+
+        // Check authentication state
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in
+                emailInput.value = user.email;
+            } else {
+                // User is signed out
+                alert('You need to be signed in to access this page.');
+                window.location.href = 'index.html'; // Redirect to login page
+            }
+        });
+
+        // Form validation
+        function validateForm() {
+            let isValid = true;
+            
+            // Check all required fields
+            const requiredFields = profileForm.querySelectorAll('[required]');
+            requiredFields.forEach(field => {
+                if (!field.value) {
+                    isValid = false;
+                    const errorId = field.id + 'Error';
+                    const errorElement = document.getElementById(errorId);
+                    if (errorElement) {
+                        errorElement.style.display = 'block';
+                    }
+                }
+            });
+            
+            // Check radio buttons
+            const requiredRadios = profileForm.querySelectorAll('input[type="radio"][required]');
+            const radioGroups = {};
+            
+            requiredRadios.forEach(radio => {
+                const name = radio.name;
+                if (!radioGroups[name]) {
+                    radioGroups[name] = false;
+                }
+                if (radio.checked) {
+                    radioGroups[name] = true;
+                }
+            });
+            
+            for (const group in radioGroups) {
+                if (!radioGroups[group]) {
+                    isValid = false;
+                    const errorElement = document.getElementById(group + 'Error');
+                    if (errorElement) {
+                        errorElement.style.display = 'block';
+                    }
+                }
+            }
+            
+            return isValid;
+        }
+
+        // Reset error messages
+        function resetErrors() {
+            const errorMessages = profileForm.querySelectorAll('.error-message');
+            errorMessages.forEach(error => {
+                error.style.display = 'none';
+            });
+        }
+
+        // Show confirmation modal
+        submitBtn.addEventListener('click', () => {
+            resetErrors();
+            if (validateForm()) {
+                confirmModal.style.display = 'flex';
+            }
+        });
+
+        // Hide confirmation modal
+        cancelBtn.addEventListener('click', () => {
+            confirmModal.style.display = 'none';
+        });
+
+        // Handle form submission
+        confirmSubmitBtn.addEventListener('click', async () => {
+            confirmModal.style.display = 'none';
+            
+            try {
+                // Get form data
+                const formData = new FormData(profileForm);
+                const profileData = {};
+                
+                formData.forEach((value, key) => {
+                    profileData[key] = value;
+                });
+                
+                // Add email from auth
+                const user = auth.currentUser;
+                profileData.email = user.email;
+                profileData.userId = user.uid;
+                profileData.timestamp = new Date();
+                
+                // Save to Firestore
+                const docRef = await addDoc(collection(db, "userprofile"), profileData);
+                console.log("Document written with ID: ", docRef.id);
+                
+                // Show success modal
+                successModal.style.display = 'flex';
+                
+                // Redirect after 3 seconds
+                setTimeout(() => {
+                    window.location.href = 'homepage.html';
+                }, 3000);
+                
+            } catch (error) {
+                console.error("Error adding document: ", error);
+                alert('There was an error saving your profile. Please try again.');
+            }
+        });
+
+        // Hide modals when clicking outside
+        window.addEventListener('click', (event) => {
+            if (event.target === confirmModal) {
+                confirmModal.style.display = 'none';
+            }
+            if (event.target === successModal) {
+                successModal.style.display = 'none';
+            }
+        });
+
+        // Show/hide tech used field based on tech use selection
+        const techUseRadios = document.querySelectorAll('input[name="techUse"]');
+        const techUsedGroup = document.getElementById('techUsedGroup');
+        
+        techUseRadios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                if (document.getElementById('techYes').checked) {
+                    techUsedGroup.style.display = 'block';
+                } else {
+                    techUsedGroup.style.display = 'none';
+                }
+            });
+        });
+
+        // Initially hide tech used field
+        techUsedGroup.style.display = 'none';
+    </script>
+</body>
+</html>
